@@ -1,0 +1,115 @@
+Prototypeal Inheritance
+=======================================================
+
+function Human(name, age) {
+	this.name = name;
+	this.age = age;
+}
+Human.prototype.sayHello = function() {
+	return "Hello!";
+};
+
+function Athlete(name, age, speed, strength) {
+	Human.call(this, name, age);
+	this.speed = speed;
+	this.strength = strength;
+}
+Athlete.prototype = Object.create(Human.prototype);
+Athlete.prototype.sayHello = function() {
+	return "What up, son!";
+};
+
+var h = new Human("John", 36);
+h.name => "John" // to understand this, see The "new" keyword
+
+Lesson 1: The prototype
+-----------------------------------
+What happens when we run h.sayHello();
+- Well, h is an object so this will look for a sayHello property on this object, hope it's a function, and try to run it.
+- But h doesn't have a sayHello property. Uh ohhhh. Wait, then how does h.sayHello() return "Hello!"?
+
+Let's think about the line Human.prototype.sayHello = [Function]. It's assigning [Function] to the sayHello property of Human.prototype.
+- So then doesn't Human.prototype have to be an object? You can't use that dot notation on something that isn't an object.
+Yes, Human.prototype is an object.
+- Huh? I never ran Human.prototype = new Object() or anything. Where did this object come from?
+When you use the new keyword to create a new Human, it automatically runs Human.prototype = new Object();
+			/// question for instructor: Is it an empty object?
+- Ok... so the line we're looking at is Human.prototype.sayHello = [Function]. Well that explains my question in line 31. But it stil doesn't answer the question of what happens when we run h.sayHello().
+When we run h.sayHello(), like you said in line 27, ther first thing it will do is look for a sayHello property on h. After trying to do this and failing... the next thing that happens is it looks for a sayHello property on h.prototype. Let me say that again: after failing to find the sayHello property on the h object, it will look for the sayHello property on the h.prototype object. In this case, it succeeds.
+- Ok, that mostly makes sense. But you keep saying that we're looking for the sayHello property. Aren't we calling a function? The code is like this: sayHello(). There's a ().
+sayHello() is really composed of two parts: 1) look up the sayHello property, 2) if it returns a function, call it (aka run the code inside of it).
+- Ahh ok!
+
+Lesson 2: The chain
+-------------------------------------------
+- Wait, so what would happen if Human.prototype didn't have a sayHello property? Like what would happen in this example:
+
+function Animal() {
+}
+Animal.prototype.sayHello = function() {
+	return "Salutations.";
+};
+
+function Human(name, age) {
+	this.name = name;
+	this.age = age;
+}
+Human.prototype = Object.create(Animal.prototype);
+
+function Athlete(name, age, speed, strength) {
+	Human.call(this, name, age);
+	this.speed = speed;
+	this.strength = strength;
+}
+Athlete.prototype = Object.create(Human.prototype);
+
+var a = new Athlete("Adam", 21, 90, 65);
+a.sayHello();
+
+Great question. So just like before, the first thing that's going to happen is a is going to check if it has a sayHello property. It doesn't, so then it'll check if Athlete.prototype has a sayHello property. It also doesn't. Hmmm.
+			// question for instructor: how does a know to check *Athlete*.prototype? Because Athlete is the constructor of a?
+- So how is this going to work?
+Well, check out line 64. It basically means, "after you check Athlete.prototype, check Human.prototype". (Under the hood, Object.create creates an empty object with a __proto__ property that points to Human.prototype).
+- Ok, so then after it checks Athlete.prototype and doesn't find sayHello, it's going to check to see if Human.prototype has sayHello?
+Exactly!
+- Ok, well, Human.prototype doesn't have a sayHello property. Then what?
+Well, let's look at line 57. What's happening there?
+- It... looks like the same thing as line 64.
+Yup!
+- So... basically copy and pasting from line 72, it means, "after you check Human.prototype, check Animal.prototype". Is that true?
+Precisely!
+- Ok... so after it sees that sayHello isn't a property of Human.prototype, it'll check to see if it's a property of Animal.prototype. Oh, it is!! Right on line 49! So a.sayHello() will return "Salutations."
+Exactly. [applause]
+
+Lesson 3: Supertype.call(this)
+------------------------------------------
+			/// question for instructor: is there a term for this? Composition? Inheritance? Polymorphism? I'm still a little confused as to what these all mean.
+So let's look at line 60. Previously we skipped it, but now we'll go over it. Basically what it's saying is "1) Run the code in the Human constructor, 2) pass in name and age as parameters to the Human constructor and 3) set the this in the Human constructor to be equal to the first argument of Human.call()."
+- Huhhh? What's the first argument to Human.call going to be?
+Let's look line 66 as an example: var a = new Athlete("Adam", 21, 90, 65). new Athlete("Adam", 21, 90, 65) is going to run lines 60-62. Let's start with line 60.
+- Ok.
+Line 60 is going to act like I describe in line 87. The real question is, "what is this going to be?". The only way I could answer that question is to replace 
+
+function Athlete(name, age, speed, strength) {
+	Human.call(this, name, age);
+	this.speed = speed;
+	this.strength = strength;
+}
+
+with
+
+function Athlete(name, age, speed, strength) {
+	var o = new Object();
+	Human.call(o, name, age);
+	o.speed = speed;
+	o.strength = strength;
+	return o;
+}
+
+This is essentially what happens when you use the new keyword before you call a function. See The "new" keyword for an explanation.
+
+Two things to note in lines 102-106 (other than what I explain in The "new" keyword article):
+1) Human.call() comes after var o = new Object();
+2) this is replaced with o.
+
+		// question for instructor: I'm only guessing that this is how it works (because it's the only way I could think of that makes sense). Is this indeed how it works?
