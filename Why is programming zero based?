@@ -1,0 +1,10 @@
+Outline
+- Think about how an array accesses elements under the hood.
+- Think about how it stores its elements contiguously in memory.
+- So to get the first one, it just accesses the memory location of the start of the array.
+- Say each bucket is 16 bits.
+- To get the next bucket, you just move over 16 bits. Aka 1*16.
+- To get the bucket after that, you move over 16 more bits from the start. Aka 2*16.
+- To get the first bucket, you don't move over any bits, aka 0*16.
+- Because you don't move over any bits, you use arr[0] to access the first element.
+- And lo and behold, the first element is accessed with the index zero.
