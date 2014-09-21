@@ -127,4 +127,12 @@ lines 117 and 118 in the closure scope.
 
 So when an outerFunction() returns an innerFunction(), the returned 
 innerFunction() has access to the stuff in outerFunciton() in a separate 
-closure scope.
+closure scope. And thus you could test
+
+if (calledAlready === false)
+
+and you could call
+
+fn()
+
+inside of returnedFunction.
