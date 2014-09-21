@@ -82,7 +82,7 @@ With var add = function(a,b) { return a + b; }
  Imagine that you're squishing the array, one element at a time, into the return value.
 
  =======================================================================
- So, why would we use reduce. Why:
+ So, why would we use reduce? Why:
 
 
  reduce(arr, 0, function(a,b) { return a+b; });
