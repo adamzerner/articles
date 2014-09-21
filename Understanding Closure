@@ -62,7 +62,7 @@ function test(a) {
 What I'm getting at is, "the parameter a is declared as a local variable to 
 the function test() and initialized to be equal to the value of the argument."
 
-The point of me explaining this is I want you to think of 
+The point of me explaining this is because I want you to think of 
 
 function once(fn) {
 	var calledAlready = false;
@@ -83,7 +83,7 @@ function once(fn) {
 	}
 }
 
-=============================================================================
+============================================================================
 Ok, back to closure.
 
 So, to understand closure, you have to understand that returnedFunction
