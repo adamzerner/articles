@@ -1,0 +1,129 @@
+reduce() is a function that confused me for a while. I think I understand it now, so here goes my explanation.
+
+=====================================================================
+This is the function:
+
+function reduce(arr, startVal, iteratingFn) {
+	var curr = startVal;
+	arr.forEach(function(el) {
+		curr = iteratingFn(curr, el);
+	});
+	return curr;
+}
+
+======================================================================
+Let's trace through a call of reduce.
+
+Say we have var arr = [1,2,3,4,5];
+ 
+// Just showing the array vertically.
+ [1]
+ [2]
+ [3]
+ [4]
+ [5]
+
+Reduce will take 3 arguments: an array, a starting value, and a function.
+Say we call reduce(arr, 0, add);
+With var add = function(a,b) { return a + b; }
+
+- reduce() will start off by setting curr = 0;
+- It will then enter the forEach loop and start at the first element:
+
+-> [1]		curr = 0
+   [2]    
+   [3]
+   [4]
+   [5]
+
+- Then it will take the first element, pass it into add(0, firstElement). In this case it'll be add(0,1). Which will return 1.
+
+-> [1]		curr = 0			curr = add(0,1) = return value of add(0,1) = 1
+   [2]    
+   [3]
+   [4]
+   [5]
+
+ - At this point, curr = 1 and we're at the second array element:
+
+   [1]
+-> [2]		curr = 1
+   [3]
+   [4]
+   [5]
+
+ - It will then do the same thing: take the element, pass it into add(curr, secondElement), and assign the result to curr:
+
+    [1]		
+ -> [2]   curr = 1			curr = add(1,2) = return value of add(1,2) = 3 
+    [3]
+    [4]
+    [5]
+
+ - At this point, curr will be 3 and we'll be at the third array element:
+
+   [1]
+   [2]		
+-> [3]		curr = 3
+   [4]
+   [5]
+
+- Here is a complete tracing:
+
+   [1]		curr = 0			curr = add(0,1) = return value of add(0,1) = 1
+   [2]		curr = 1			curr = add(1,2) = return value of add(1,2) = 3
+   [3]		curr = 3			curr = add(3,3) = return value of add(3,3) = 6
+   [4]		curr = 6			curr = add(6,4) = return value of add(6,4) = 10
+   [5]		curr = 10			curr = add(10,5) = return value of add(10,5) = 15
+   curr = 15
+
+ - Finally, once we finish going through the forEach loop, curr will be 15 and we will return curr.
+
+ Imagine that you're squishing the array, one element at a time, into the return value.
+
+ =======================================================================
+ So, why would we use reduce. Why:
+
+
+ reduce(arr, 0, function(a,b) { return a+b; });
+
+ over
+
+ curr = 0;
+ arr.forEach(function(el) {
+ 	curr += el;
+ })
+ return curr;
+
+ Well, it's basically the same thing. As far as I could tell, it's just easier to write line 88 than lines 92-96.
+
+ Imagine if you wanted to see if every element in an array is even. You could just write:
+
+ reduce(arr, true, function(a,b) { return a && b%2===0; });
+
+ instead of:
+
+ var curr = true;
+ arr.forEach(function(el) {
+ 	return curr && el%2===0;
+ });
+ return curr;
+
+ Basically, line 102 is a shortcut for lines 106-110.
+
+===================================================================
+In the real world, JavaScript arrays have a reduce() funciton built in. So instead of writing reduce(arr, 0, add) you could write arr.reduce(add, 0).
+Note: for JavaScript's built in reduce() function, the iterating function is the first argument and the startVal is the second.
+
+
+And in the real world, this built in reduce() function has a very nice convenient feature. If you only pass in the iterating function, it'll set curr = arr[0], and start iterating at arr[1]. Here's how I discovered that.
+
+I saw
+
+"add" 			arr.reduce(function(a,b) { return a+b; }); work, and 
+"multiply" 	arr.reduce(function(a,b) { return a*b; }); work.
+
+I thought to myself, "Hmm, apparently if you don't pass in startVal, it sets it to some default. But what is that default? If it's zero, then "multiply" wouldn't work. But if it's 1, then add wouldn't work." After googling around a bit, I discovered that it works by setting curr = arr[0] and starting the iteration at arr[1].
+
+=======================================================================
+Weirdly, even after writing this article, reduce() still isn't that intuitive to me. Writing lines 106-110 is still more intuitive to me than writing line 102. I suspect that it's like this for other people as well (based on seeing similar preferences in my Fullstack classmates). I suppose that it's just a matter of using it a lot. Once you use it a lot, I suspect that reduce() will become intuitive, and it will make for more concise code.
