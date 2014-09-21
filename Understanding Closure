@@ -51,11 +51,13 @@ Before explaining what closure is, let me just clarify something.
 function test(a) {
 	return a+1;
 }
-test(5);			function test(a) {
-								// under the hood, this happens
-								var a = 5;
-								return a+1;
-							}
+test(5);
+
+function test(a) {
+	// under the hood, this happens
+	var a = 5;
+	return a+1;
+}
 
 What I'm getting at is, "the parameter a is declared as a local variable to 
 the function test() and initialized to be equal to the value of the argument."
@@ -121,7 +123,7 @@ function once(fn) {
 }
 
 Calling once() returns a function. This returned function has access to
-lines 115 and 116 in the closure scope.
+lines 117 and 118 in the closure scope.
 
 So when an outerFunction() returns an innerFunction(), the returned 
 innerFunction() has access to the stuff in outerFunciton() in a separate 
