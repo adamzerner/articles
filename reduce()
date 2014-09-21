@@ -38,7 +38,7 @@ With var add = function(a,b) { return a + b; }
 
 - Then it will take the first element, pass it into add(0, firstElement). In this case it'll be add(0,1). Which will return 1.
 
--> [1]	curr = 0		curr = add(0,1) = return value of add(0,1) = 1
+-> [1]	curr = 0	curr = add(0,1) = return value of add(0,1) = 1
    [2]    
    [3]
    [4]
@@ -55,7 +55,7 @@ With var add = function(a,b) { return a + b; }
  - It will then do the same thing: take the element, pass it into add(curr, secondElement), and assign the result to curr:
 
     [1]		
- -> [2]  curr = 1		curr = add(1,2) = return value of add(1,2) = 3 
+ -> [2]  curr = 1	curr = add(1,2) = return value of add(1,2) = 3 
     [3]
     [4]
     [5]
@@ -70,11 +70,11 @@ With var add = function(a,b) { return a + b; }
 
 - Here is a complete tracing:
 
-   [1]	curr = 0		curr = add(0,1) = return value of add(0,1) = 1
-   [2]	curr = 1		curr = add(1,2) = return value of add(1,2) = 3
-   [3]	curr = 3		curr = add(3,3) = return value of add(3,3) = 6
-   [4]	curr = 6		curr = add(6,4) = return value of add(6,4) = 10
-   [5]	curr = 10		curr = add(10,5) = return value of add(10,5) = 15
+   [1]	curr = 0	curr = add(0,1) = return value of add(0,1) = 1
+   [2]	curr = 1	curr = add(1,2) = return value of add(1,2) = 3
+   [3]	curr = 3	curr = add(3,3) = return value of add(3,3) = 6
+   [4]	curr = 6	curr = add(6,4) = return value of add(6,4) = 10
+   [5]	curr = 10	curr = add(10,5) = return value of add(10,5) = 15
    curr = 15
 
  - Finally, once we finish going through the forEach loop, curr will be 15 and we will return curr.
