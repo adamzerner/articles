@@ -120,7 +120,7 @@ And in the real world, this built in reduce() function has a very nice convenien
 
 I saw
 
-"add" 			arr.reduce(function(a,b) { return a+b; }); work, and 
+"add" 		arr.reduce(function(a,b) { return a+b; }); work, and 
 "multiply" 	arr.reduce(function(a,b) { return a*b; }); work.
 
 I thought to myself, "Hmm, apparently if you don't pass in startVal, it sets it to some default. But what is that default? If it's zero, then "multiply" wouldn't work. But if it's 1, then add wouldn't work." After googling around a bit, I discovered that it works by setting curr = arr[0] and starting the iteration at arr[1].
