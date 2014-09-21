@@ -1,0 +1,128 @@
+Closure is one of those things that can be really difficult to wrap your head 
+around. Hopefully it'll make sense after reading this!
+
+============================================================================
+So let's look at this function as an example:
+
+function once(fn) {
+	var calledAlready = false;
+	return function() {
+		if (calledAlready === false) { fn(); }
+		calledAlready = true;
+	}
+}
+
+once() will return a function. (Yes, in JavaScript, functions could return 
+functions. In JavaScript, functions are just objects, and like all objects, 
+they could be stored in variables and returned from functions. In fact, 
+function once(fn){} is the the same thing as var once = function(fn){}. Well,
+not exactly the same thing, but you could think of them as the same for now.)
+
+So, once() will return a function. This is the function it will return:
+
+function() {
+	if (calledAlready === false) { fn(); }
+	calledAlready = true;
+}
+
+It may make more sense to think of it like this: once() will return a
+function, and thus you could do this:
+
+var returnedFunction = once(fn);
+returnedFunction
+=> function() {
+	   if (calledAlready === false) { fn(); }
+	   calledAlready = true;
+   }
+
+If you're like me, you'll have two *pressing* questions:
+1) "Huh!! In returnedFunction, calledAlready hasn't been declared as a 
+variable or anything. How are we using it? How can you test to see if an
+undeclared variable is equal to something else?"
+2) "How can you call fn() in returnedFunction??? It hasn't been declared or
+initialized either. How can you call a function that hasn't been declared or
+initialized???"
+
+The answers to these questions isn't "magic!"... it's "closure!!!".
+
+=============================================================================
+Before explaining what closure is, let me just clarify something.
+
+function test(a) {
+	return a+1;
+}
+test(5);			function test(a) {
+								// under the hood, this happens
+								var a = 5;
+								return a+1;
+							}
+
+What I'm getting at is, "the parameter a is declared as a local variable to 
+the function test() and initialized to be equal to the value of the argument."
+
+The point of me explaining this is I want you to think of 
+
+function once(fn) {
+	var calledAlready = false;
+	return function() {
+		if (calledAlready === false) { fn(); }
+		calledAlready = true;
+	}
+}
+
+as 
+
+function once(fn) {
+	var fn = ~argument~
+	var calledAlready = false;
+	return function() {
+		if (calledAlready === false) { fn(); }
+		calledAlready = true;
+	}
+}
+
+=============================================================================
+Ok, back to closure.
+
+So, to understand closure, you have to understand that returnedFunction
+isn't what you think it is.
+
+You think that returnedFunction is something like the following:
+
+function() {
+	if (calledAlready === false) { fn(); }
+	calledAlready = true;
+}
+
+In fact, it's more like the following:
+
+function() {
+	// closure scope
+	fn = ~argument~
+	calledAlready = false;
+
+	// local scope
+	if (calledAlready === false)  { fn(); }
+	calledAlready = true;
+}
+
+It has this "closure scope" that is sort of in between the functions local
+scope and its parent scope.
+
+Think back to once():
+
+function once(fn) {
+	var fn = ~argument~
+	var calledAlready = false;
+	return function() {
+		if (calledAlready === false) { fn(); }
+		calledAlready = true;
+	}
+}
+
+Calling once() returns a function. This returned function has access to
+lines 115 and 116 in the closure scope.
+
+So when an outerFunction() returns an innerFunction(), the returned 
+innerFunction() has access to the stuff in outerFunciton() in a separate 
+closure scope.
