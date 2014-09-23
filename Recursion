@@ -1,0 +1,76 @@
+Recursion can be really difficult to wrap your head around. Your programs are written 
+top to bottom, and so far, the code has been executed in that order. But recursion is
+different. In recursion you're creating new instances of the function (not sure if 
+that's the right word) and jumping from one instance to another. I'll show you what 
+I mean.
+
+Let's take the following function as an example:
+
+function factorial(n) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+		return n * factorial(n-1);
+	}
+}
+
+Before talking about the function and recursion, let me just first explain what a 
+factorial is in case you aren't familiar (if you are, feel free to skip ahead).
+
+The easiest way to explain what a factorial is is just by giving an example:
+5! reads as "five factorial"
+5! = 5*4*3*2*1
+8! = 8*7*6*5*4*3*2*1
+2! = 2*1
+1! = 1
+0! = 1 // special case
+no such thing as taking the factorial of a negative number
+
+Ok, so let's explore this factorial function. Say we call factorial(5). Let's go 
+through it line by line. n will be equal to 5, and it doesn't go into the if block.
+It will go into the else block. Inside of the else block, it says
+
+return n * factorial(n-1);
+
+Understanding this line is key to understanding the function, and to understanding 
+recursion itself.
+
+Here's what's going to happen:
+- It's going to try to multiply 5 by factorial(4).
+- But to do that, it needs to know what factorial(4) returns.
+- To know what factorial(4) returns, it needs to run factorial(4).
+- factorial(4) will try to multiply 4 by factorial(3).
+- To know what factorial(3) returns, it needs to run factorial(3).
+- factorial(3) will try to multiply 3 by factorial(2).
+- To know what factorial(2) returns, it needs to run factorial(2).
+- factorial(2) will try to multiply 2 by factorial(1).
+- To know what factorial(1) returns, it needs to run factorial(1).
+- factorial (1) will return 1.
+
+Now watch what happens:
+- In line 47, factorial(2) *paused* on line 14. It couldn't continue to run because it
+needed to wait to see what factorial(1) returned. Now that it knows, it replaces 
+factorial(1) with its return value, which is 1, multiplies it by 2, and returns it.
+- Now, on line 45, it was waiting for factorial(2) to run and return a value. Now 
+that it has, line 45 can resume execution and return 3*2 which is 6.
+- This continues up the chain, but I'll continue to trace it for you :)
+- So now that factorial(3) finished executing, line 43 can insert the return value in 
+place of factorial(3), multiply it by 4, and return it.
+- Finally, line 40 can place in the result of factorial(4), multiply it by 5, and 
+return it.
+
+Phew, that was a long trace. Let me try showing it to you a differnt way. I think 
+this visualization will help you understand what it means when I say that the function
+pauses execution, and then resumes execution. To help make this explicit, I'm going 
+to write the function slightly differently.
+
+function factorial(n) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+		var r = factorial(n-1);
+		return n * r;
+	}
+}

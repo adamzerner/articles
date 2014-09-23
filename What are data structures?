@@ -1,0 +1,74 @@
+To understand what data structures are, let's first review the 6 
+types in JavaScript.
+
+Primitive Types:
+1) Number
+2) String
+3) Boolean
+4) Null
+5) Undefined
+
+Reference Type:
+1) Object
+
+
+Now, you probably have some sort of vague understanding that an 
+array is a data structure, along with things like linked lists
+and queues.
+
+But what about a Number? Is that a data structure? And what 
+about a String? Is that a data structure?
+
+The answer to both of those questions is: "no".
+
+But why? Why is an array a data structure but a Number isn't? 
+Well, an Array could store multiple elements in it while a 
+Number... is just a Number. A Number doesn't *store* anything, 
+it *is* something (if that makes sense). A data structure lets 
+you *store* data.
+
+==============================================================
+- Ok, so I could understand that an Array and an Object are both 
+data structures because they store things. And I understand why 
+primitive types aren't data structures. But I hear all this talk 
+about *building* your own data structures. I have no clue how to 
+do that. From what I could tell, languages come with data 
+structures and you use them. How is it possible to build your own?
+
+Great question. So let's think about what a data structure is. 
+All it is is something that can allows you to get and set data.
+
+In fact, you're more familiar with this than you think. You've 
+done classes before right? Watch this:
+
+function Person(name) {
+	this.name = name;
+	this.getName = function() {
+		return this.name;
+	}
+	this.setName = function(name) {
+		this.name = name;
+	}
+}
+var p = new Person("Adam");
+p.getName() => "Adam"
+p.setName("Ross");
+p.getName() => "Ross"
+
+The Person class is used to get and set data, which is all a data
+structure is. In this case, it can only get and set one property:
+name. Usually we'd want our data structure to be able to store 
+many properties, but this Person class is still a data structure.
+
+=================================================================
+Let's try building a better data structure:
+
+function Queue() {
+	this.data = [];
+	this.enqueue = function(el) {
+		
+	}
+	this.dequeue = function(el) {
+
+	}
+}
