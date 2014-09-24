@@ -74,3 +74,97 @@ function factorial(n) {
 		return n * r;
 	}
 }
+
+This is the same thing, as lines 9-16, except I split line 14 up into two lines to 
+make things more explicit.
+
+So say we call factorial(5).
+
+function factorial(5) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+ -> var r = factorial(4);
+		return 5 * r;
+	}
+}
+
+The function will *pause* on line 88 as it waits for factorial(n-1) to return a value.
+Once it does, this function (let's call it factorial(5)) will continue executing where
+it paused. It will assign the return value of factorial(4) to r, and then proceed to 
+line 89 where it returns n*r.
+
+Let's go through a whole trace of the call to factorial(5) this way. factorial(5) will
+pause on line 88 and create a new instance, factorial(4):
+
+function factorial(4) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+ -> var r = factorial(3);
+		return 4 * r;
+	}
+}
+
+factorial(4) will pause on line 106, create a factorial(3) instance, and wait for it 
+to return.
+
+function factorial(3) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+ -> var r = factorial(2);
+		return 3 * r;
+	}
+}
+
+factorial(3) will pause on line 119, create a factorial(2) instance, and wait for it
+to return.
+
+function factorial(2) {
+	if (n === 1 || n === 0) {
+		return 1;
+	}
+	else {
+ -> var r = factorial(1);
+		return 2 * r;
+	}
+}
+
+factorial(2) will pause on line 132, create a factorial(1) instance, and wait for it
+to return.
+
+function factorial(1) {
+	if (n === 1 || n === 0) {
+ -> return 1;
+	}
+	else {
+    var r = factorial(n-1);
+		return 1 * r;
+	}
+}
+
+factorial(1) will *not* make a recursive call (that's what it called when a function 
+calls itself). It will return 1.
+
+Now that factorial(1) has returned something, execution will resume on line 132. r 
+will be assigned a value of 1, and line 133 will return 2.
+
+Now that factorial(2) has returned something, execution will resume on line 119. r
+will be assigned a value of 2, and line 120 will return 6.
+
+Now that factorial(3) has returned something, execution will resume on line 106. r
+will be assigned a value of 6, and line 107 will return 24.
+
+Now that factorial(4) has returned something, execution will resume on line 88. r
+will be assigned a value of 24, and line 89 will return 5*24, which is 120.
+
+
+And that's recursion!
+
+=================================================================================
+To add:
+- explanation of the call stack

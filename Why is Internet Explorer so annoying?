@@ -1,0 +1,32 @@
+If you've been been doing HTML/CSS/JS for a few weeks, you've probably run into 
+problems with Internet Explorer. Meaning, the code works for all the other browsers
+except for IE. You ask yourself, "why?!!!". And then you have to look up some work 
+around. Here's why.
+
+So, early on in the days of internet browsers, IE had a great majority of the market 
+share. Meaning that somewhere around 80% (rough number, I made it up) of people used IE as their internet browser. They had a monopoly and wanted to keep it.
+
+IE chose to use different conventions from all the other browsers. That 
+way, developers would have to choose between:
+1) Being IE compatible.
+2) Being compatible with other browsers.
+3) Spending a ton of time making sure that you're compatible with IE and the other 
+browsers.
+
+IE was hoping that developers would choose 1). They thought, "Since we have so much 
+of the market, they won't choose 2). And we'll make it really time consuming for them
+to choose 3), that way they'll choose 1). And once developers develop for IE and not 
+other browsers, sites won't work on other browsers, and people will use IE."
+
+Assholes.
+
+Is the marginal revenue they're generating really worth the cost to humanity? To 
+holding back the internet?
+
+Fortunately, people started using other browsers, IE lost their monopoly, and had to 
+start being compliant. The past few releases of IE are pretty compliant, so 
+fortunately it's not something developers have to think about too much anymore. 
+Although, a lot of old people and slow-moving corporations/bureaucracies still use 
+old versions of IE. And so, developers are still trying to make sure their sites are 
+IE < 8 compatible. Which is unfortunate because these developers could be doing other
+more productive things with their time.
