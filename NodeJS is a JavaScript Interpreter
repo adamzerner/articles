@@ -1,0 +1,69 @@
+What is NodeJS? It's a JavaScript interpreter. That's really it.
+
+Have you ever used any other languages? Perhaps Java or Ruby or something?
+To run code in Ruby, first you had to install Ruby, and then you have to go to your
+command line and run a command like this:
+
+ruby example.rb
+
+The reason why you could do this is because you installed Ruby. Otherwise, you wouldn't
+be able to do this.
+
+How do you run JavaScript code? You can't do it from your command line. For example, 
+you can't run a command analogous to ruby example.rb. You can't run
+
+javascript example.js
+
+So how do you run JavaScript code? Well... there's a few options:
+1) You could make an HTML file, go to it in your browser, and then open the browser 
+console (cmd+j with Chrome) and you'll see your code run.
+2) Or you could just go to any web page, open the browser console (cmd+j) and type 
+and run the code.
+3) Or you could go to a site like repl.it or jsbin.com to type and run your code there.
+
+To run JavaScript code, you need an interpreter. In 1) and 2) your browser is the 
+interpreter (yes, browsers can interpret JS). In 3) those sites wrote their own JS 
+interpreters.
+
+You'll notice that this is pretty different from other languages. In other languages
+you probably had to install them on your computer and run commands like ruby example.rb.
+
+When you download ruby, your installing a *ruby interpreter* on your computer that 
+runs the code in example.rb when you run ruby example.rb in your command line. 
+NodeJS is a *javascript interpreter*. When you install it, you could run 
+
+node example.js
+
+and it'll run the code in example.js. That's essentially all NodeJS is :)
+
+=====================================================================================
+But you probably still have more questions. "Doesn't NodeJS have to do with servers 
+or something?"
+
+Yes. Let me explain.
+
+A server could really mean two different things. The way I always understood the term, 
+it means a physical computer. When I type in google.com, it makes a request to a 
+physical computer that Google owns, that sends back a response to my computer that my 
+browser interprets and displays for me. In this case, a server is a physical computer.
+
+But a server can also refer to a program. On that physical server, a software program 
+is running that takes requests and sends responses. So in this sense, a server is 
+software.
+
+And this software doesn't have to be on a different computer from the client. I could 
+have a server program running on my computer. I could send requests to it, and it'll
+send back responses.
+
+====================================================================================
+Ok, back to Node.
+
+So now that we know that servers could mean a software program, a sensible question is,
+"What language is this program written in?". Before Node, the only real JavaScript 
+interpreter was the browser. So, server programs couldn't be written in JavaScript. Now
+that Node has been invented, these server programs could run JavaScript, and you could 
+handle server-side stuff with JavaScript!
+
+And this is usually what people mean when they're talking about Node. They're usually 
+referring to Node allowing you to run JavaScript code on the server and use it for 
+server-side programming.
