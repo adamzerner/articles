@@ -1,0 +1,9 @@
+Outline
+- Computers wouldn't be able to do too much if they weren't connected.
+- Once connected, A could request info from B. B could send it to A, and A could display it.
+- This is what happens when you enter a url. Think about it, when you go to google.com, you don't have the information to display it on your computer. You have to request information from googles computer. If they give it to you, you could then use your browser to display it
+- All these connected computers form a network. Aka, "the net" or "the internet" or "the web" (see V-Sauces video for mor info).
+- "How is information transferred between computers? I know that data is stored as bits. Can information be sent as bits?"
+- Great question! We know that on our computers there are these switches (transistors) that could be on or off, and in that sense binary data could be stored. But how could electricity transmitted through wires encode binary data? Timing. Think Moorse Code. It works something like that.
+- "Ok. So what are these protocols."
+- When you're on the net, you're requesting and sending different types of information. You make requests to websites, you send emails, download music, upload files etc. These different types of information are stored differnetly as they're transmitted. Thus, we use different protocols to send different types of information.
