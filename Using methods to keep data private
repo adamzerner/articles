@@ -1,0 +1,48 @@
+function Person() {
+	this.name = "";
+}
+
+Right now, I could do something like this:
+
+var adam = new Person();
+adam.name = "stupid idiot";
+
+What if I don't want people doing this? I could do something 
+like this:
+
+function Person() {
+	this._name = "";
+	this.setName = function(name) {
+		if (name !== "stupid idiot") {
+			this._name = name
+		}
+	}
+}
+
+What I did here is I made teh name property private by 
+prefacing it with an underscore. Meaning you can't* do
+
+adam._name = "example";
+
+Nor can you get the name by calling adam._name.
+
+In order to set the name you have to use setName(). This 
+is good because could validate the input before actually 
+changing the name property.
+
+
+*Actually, I lied.
+
+In JavaScript, you actually can do
+
+adam._name = "example";
+
+even though it has the underscore. In other langauges you 
+coudl actually make a property private such that you can't 
+manipulate it directly. In JavaScript we prepend things with 
+underscores to tell other developers that we don't want them 
+manipulating it directly.
+
+
+The main takeaway here is that we often don't want people 
+manipulating properties directly. We want to validate the 
