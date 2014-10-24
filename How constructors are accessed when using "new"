@@ -1,0 +1,93 @@
+How constructors are accessed when using "new"
+
+
+function Child(c) {
+	this.childProperty = c;
+}
+
+You probably know that when you run
+
+var c = new Child(10);
+
+it'll run the code on line 4 (the Child constructor function). But how
+does it know to do this? It isn't as simple as (it sees new *Child* and 
+"just" knows to run it).
+
+To understand what's happening, first it's important to understand what
+happens when we declare a function.
+- In JavaScript, functions are just objects. Ie. a set of key-value pairs.
+- When you declare a function, it creates an object with three properties:
+	1) a name property ("Child")
+	2) a length property which says how many arguments it's expecting (1)
+	3) a prototype property (Child.prototype)
+- When you declare a function, it also creates a corresponding prototype
+object (Child.prototype). In this case that'd be Child.prototype. 
+- The Child.prototype object has one property: constructor. constructor just 
+points back to Child.
+
+When you call new Child(10), this is what happens:
+- It sees "Child"
+- It looks at the prototype property of Child and finds the Child.prototype
+object.
+- It looks for a constructor property in this Child.prototype object to run.
+	- If it finds it, it runs it.
+	- If it doesn' find it, it looks up the prototype chain (by looking at 
+	Child.prototype.__proto__) until it finds a constructor function to run.
+
+In this example, you never would have to understand any of this. You could just 
+know (really, "think") that "new Child(10) runs the code on lines 4-6".
+
+But in order to set up class-based inheritance in JavaScript and understand 
+what you're doing, it's actually sort of vital that you understand this. Let me
+set up an example to show you what I mean.
+
+
+
+function Parent(p) {
+	this.parentProperty = p;
+}
+
+function Child(c) {
+	this.childProperty = c;
+}
+Child.prototype = Object.create(Parent.prototype);
+
+var c = new Child(10);
+c.childProperty => undefined
+
+What's happening here?
+- When you call new Child(10), it looks at Child.prototype for a constructor
+property to run.
+- It doesn't find it. Child.prototype === { __proto__: Parent.prototype }
+	- To understand this, you have to understand Object.create. Object.create
+	just creates an object with one property: __proto__. The value of this property
+	is the argument to Object.create. Which in this case is Parent.prototype.
+- It looks up the prototype chain. It looks at Child.prototype.__proto__ and finds
+Parent.prototype.
+- It looks for a constructor function to run in Parent.prototype.
+- It finds it!
+- It runs it.
+- So c === { parentProperty: 10 }
+
+Ok, this obviously isn't what we want. So how do we fix it? If you're curious, 
+try to figure it out yourself. Hint: it's one line of code! You probably won't
+be able to figure it out though, so stand on the shoulders of giants and continue
+reading!
+
+The one line of code is: **Child.prototype.constructor = Child;** It'd be inserted 
+after line 53.
+
+Now when we run new Child(10), the following is what would happen:
+- It'd look at Child.prototype for a constructor to run.
+- It'd find it!
+- It'd run it!!
+- That's it.
+
+
+I got this from watching The Definitive Guide to Objects in JavaScript video.
+Most of what I explain here he goes over in the video. But he said that he 
+wasn't sure if the line Child.prototype.constructor = Child; was necessary or 
+not. So I thought about it and went over it with Omri, and we realized that
+it's essential. The reason he might have thought it wasn't necessary is because 
+his Child constructor just called Parent's constructor. So each constructor 
+function ended up doing the same thing.

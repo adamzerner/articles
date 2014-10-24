@@ -1,0 +1,77 @@
+Dependency Injection
+
+$injector = function() {
+	var cache = [
+		.
+		.
+		.
+	];
+	var library = [
+		{ $http: httpConstructor },
+		{ $routeProvider: routerProviderConstructor }
+		.
+		.
+		.
+	];
+
+	return {
+		get: function(name) { // ex. $http
+			// if name is in cache, return it
+			if (typeof cache[name] !== "undefined") {
+				return new cache[name]();
+			}
+
+			// if not, create it from the library,
+			// store it in cache for next time
+			// and return it
+			else {
+				var temp = library[name];
+				cache[name] = temp;
+				return new temp();
+			}
+		}
+		.
+		.
+		.
+	};
+}();
+
+- This $injector is part of app.js. It's one of the scripts
+in index.html, and is loaded before all other scripts. So 
+$injector will be available on the JavaScript runtime for all of
+your other scripts to access.
+- So $injector is available to all your controllers and 
+and modules and stuff in other scripts.
+- You could do something like $injector.get($http), and it'll
+return an object with some functionality that you could use.
+
+- This follows the singleton design pattern. In your *whole* app,
+you only need one copy of objects like $http. You *don't* need to
+instantiate them multiple times. Whenever you want them, you just
+use $injector.get(name) to access them.
+- You have to use $injector.get() to access these objects. They're
+available in $injector.get() as a closure. They aren't available as
+publicly accessable properties of $injector (and they certainly
+aren't available as globals).
+
+
+So how would we use this?
+
+app.controller('PlacesCtrl', [$http, function() {
+	// use $http to make an ajax request
+	// something like $http.get(...)
+}]);
+
+In this example, you have access to the $http object inside of the callback
+and you could use to it to do stuff you want it to do. Like $http.get()...
+
+Q: But how did we get access to it? We didn't use $injector or anything.
+A: Under the hood, Angular did $injector.get($http) when it saw that $http
+is an argument in the array.
+
+This is what dependency injection is. All you did is pass in $http 
+as an argument. You just said "this is what I want, go get it for me".
+Angular then did the work to get it. You can contrast this with something
+like require('$http'), where it's explicitly going to get it.
+// Actually, I don't understand this. require('$http') seems to be doing
+// the same thing. It says "go get me $http".

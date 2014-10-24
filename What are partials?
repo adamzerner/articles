@@ -1,0 +1,33 @@
+I'm reading this book right now. Pages 45-50 are all referencing
+the same diagram. But the diagram is only on page 51. So every time
+I want to reference it, I have to turn to page 51.
+
+It would be much better if each page had the diagram on the top half
+of the page, and the text on the bottom half. The text would have to 
+take up 10 pages instead of 5 though. And we'd have to print the image
+on each of these 10 pages, which would take up a lot of ink.
+
+What if we didn't have to print the same picture 10 times though. Can 
+you think of a way to do that?
+
+I'll tell you the way I thought of. You'd just have one page with the 
+image on the top half of the page, and a 10 page mini flip book on the
+bottom of this page. The flip book would contain the text.
+
+This would accomplish two things:
+1) Let you reference the picture while you're reading the text
+(instead of having to reference it on page 51).
+2) Prevent you from having to print the image 10 times.
+
+======================================================================
+In programming, there's an idea of Don't Repeat Yourself. They say to 
+keep your code DRY.
+
+Lets think of a web example that is analogous to the book example. Say
+you have 10 web pages with the same picture on the top half. The first 
+thing that would come to my mind is to just have 10 view files with the
+same <img> tag, and different content underneath the <img>.
+
+But this is repetitive. How can we avoid this repetition? By using partials.
+
+You'd have one view file 
