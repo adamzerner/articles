@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scope Inheritance</title>
+		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="main.css" rel="stylesheet">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body class="container">
+		<div class="page-header">
+			<h1>$scope and Inheritance</h1>
+		</div>
+
+		<p>Rule 1: When <strong>setting</strong>, you <strong>don't</strong> look up the prototype chain.</p>
+		<p>Rule 2: When <strong>getting</strong>, you <strong>do</strong> look up the prototype chain.</p>
+		
+		<br />
+		<div class="row">
+			<div class="col-xs-6">	
+				<pre>
+					var child = {
+					};
+					child.__proto__ = parent;
+				</pre>
+			</div>
+			<div class="col-xs-6">
+				<pre>
+				var parent = {
+				  prim: 5,
+				  obj: { val: 6 }
+				};
+				</pre>
+			</div>
+		</div>
+		<br />
+
+		<div class="row">
+			<div class="col-xs-6">
+				<p><small class="underline">Setting</small></p>
+				<pre>
+					child.prim = 10;
+					child
+					=> {
+					      prim: 10,
+					      __proto__: parent
+					   }
+					parent
+					=> {
+					      prim: 5,
+					      obj: { val: 6 }
+					   }
+					// if it went up the prototype chain
+					// parent.prim would be set to 10
+					// but it doesn't
+				</pre>
+			</div>
+			<div class="col-xs-6">
+				<p><small class="underline">Getting</small></p>
+				<pre>
+					child.prim
+					=> 5
+					child.obj.val
+					=> 6
+					// child doesn't have these values
+					// but it looks up the prototype chain
+					// to find them
+
+					// if __proto__ wasn't set, it wouldn't
+					// be able to look up the chain,
+					// and each would return undefined
+
+
+					child
+					=> {
+					      __proto__: parent
+					   }
+					parent
+					=> {
+					      prim: 5,
+					      obj: { val: 6 }
+				    }
+				</pre>
+				<br /><br />
+			</div>
+
+			<div class="col-xs-12">
+				<p>What do you think would happen here:</p>
+				<pre>
+					child.obj.val = 20;
+					child.obj.val => ?
+					parent.obj.val => ?
+				</pre>
+				<p>Originally I thought that since it's setting, there's no looking up the chain, and thus:</p>
+				<ul>
+					<li><code>child.obj.val</code> would be set to 20.</li>
+					<li><code>parent.obj.val</code> would remain as 6.</li>
+				</ul>
+				<p>I was wrong.</p><br />
+
+				<p>Let me explain what's happening.</p><br />
+
+				<p><code>child.obj.val = 20</code> can be thought of as two steps:</p>
+				<ol>
+					<li><code>var temp = child.obj;</code></li>
+					<li><code>temp.val = 20;</code></li>
+				</ol><br />
+
+				<p>Step 1) involves <em>getting</em>, and thus looking up the prototype chain is allowable. Since it doesn't find an <code>obj</code> property on <code>child</code>, it looks up the chain, and finds an <code>obj</code> property on <code>parent</code>.</p><br />
+
+				<p>In step 2) the <code>val</code> of the <code>obj</code> that was found is set to 20.</p><br />
+
+				<p>Alternatively, you could visualize it with parentheses:</p>
+				<ul>
+					<li><code>(child.obj).val = 20</code></li>
+				</ul> 
+			</div>
+		</div><br /><br />
+		
+
+
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>Angular</h3>
+				<p>This all is important if you want to understand scopes in Angular.</p><br />
+
+				<p>From <a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">https://github.com/angular/angular.js/wiki/Understanding-Scopes</a></p>
+
+				<div class="from_docs">
+					<p>Suppose we have in our controller:</p>
+
+					<p>$scope.myPrimitive = 50;<br />$scope.myObject = {aNumber: 11};</p>
+
+					<p>And in our HTML:</p>
+
+					<p>
+						&lt;script type="text/ng-template" id="/tpl1.html"&gt;<br />
+						&nbsp;&nbsp;&lt;input ng-model="myPrimitive"&gt;<br />
+						&lt;/script&gt;<br />
+						&lt;div ng-include src="'/tpl1.html'"&gt;&lt;/div&gt;<br /><br />
+
+						&lt;script type="text/ng-template" id="/tpl2.html"&gt;<br />
+						&nbsp;&nbsp;&lt;input ng-model="myObject.aNumber"&gt;<br />
+						&lt;/script&gt;<br />
+						&lt;div ng-include src="'/tpl2.html'"&gt;&lt;/div&gt;<br /><br />
+						Each ng-include generates a new child scope, which prototypically inherits from the parent scope.ng-include.
+					</p>
+				</div><br />
+				<img src="understanding_scope1.png" /><br />
+				<p>What do you think will happen if you type "77" into the first input field? Well, it's basically like doing:</p><br />
+
+				<p><code>ChildScope1.myPrimitive = 77;</code></p><br />
+
+				<p>What should happen then?</p><br />
+
+				<p>Well, since we're <em>setting</em>, we don't look up the prototype chain, and we just add a <code>myPrimitive</code> property to <code>ChildScope1</code> with a value of 77.</p><br />
+
+				<img src="understanding_scope2.png" /><br />
+
+				<p>Ok, so what about if we type in "99" to the second input field? That's basically like doing:</p><br />
+
+				<p><code>ChildScope2.myObject.aNumber = 99;</code></p><br />
+
+				<p>What should happen then?</p><br />
+
+				<p>Well, this is analogous to doing the following:</p>
+				<ol>
+					<li><code>var temp = ChildScope2.myObject;</code></li>
+					<li><code>temp.aNumber = 99;</code></li>
+				</ol><br />
+
+				<p>The first part involves <em>getting</em>, and thus looking up the prototype chain is allowable. <code>ChildScope2</code> starts off by looking for <code>myObject</code> on itself, and it doesn't find it. So it then proceeds to loo up the prototype chain, and finds <code>myObject</code> on <code>ParentScope</code>. Essentially, <code>temp</code> becomes <code>ParentScope.myObject</code>.</p><br />
+
+				<p>Then, <code>ParentScope.myObject</code> just has its <code>aNumber</code> property overwritten with 99.</p><br />
+
+				<img src="understanding_scope3.png" /><br />
+
+			</div>
+		</div>
+	</body>
+</html>

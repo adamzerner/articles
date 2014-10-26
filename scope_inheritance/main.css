@@ -1,0 +1,14 @@
+body {
+	font-family: "Menlo";
+	font-size: 18px;
+}
+pre {
+	font-size: 16px;
+}
+.from_docs {
+	font-size: 14px;
+	line-height: 16px;
+}
+.underline {
+	text-decoration: underline;
+}
