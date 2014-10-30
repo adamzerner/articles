@@ -1,0 +1,43 @@
+Are one-line functions good, or bad?
+
+function sayHello() {
+	console.log('hello');
+}
+
+sayHello(); vs. console.log('hello');
+
+Which is better?
+
+Let's start by asking the question of what your goal is in 
+writing code. Off the top of my head, I can think of two:
+1. Accomplishing something
+2. Making it readable
+
+sayHello() and console.log('hello'); both accomplish the 
+same exact thing. So the question really is 2 - which is 
+more readable.
+
+When you see sayHello(), you have to remember what the output
+is. When you see console.log('hello'), you have to interpret
+it and figure out what the output is.
+
+
+Let me give another example:
+
+function complex() {
+	djlfsdlfjdssljkfjsdlfjs
+}
+
+complex() vs. djlfsdlfjdssljkfjsdlfjs
+
+When you see djlfsdlfjdssljkfjsdlfjs, you have to interpret
+it and figure out what the output is. When you see complex(), 
+you just have to remember what the output is, which will probably
+be easier.
+
+So the question really is, "What's easier: remembering what 
+the abstracted function's output is, or interpreting the code
+and figuring out what the output is?"
+
+The answers to this question will determine when it's best
+to abstract (in cases where 1. is being held constant).
